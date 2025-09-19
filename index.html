@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NASCAR Hours Leaderboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #111, #222);
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin: 20px;
+      color: #FFD700;
+      text-shadow: 2px 2px #000;
+    }
+    .podium {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      margin: 40px auto;
+      gap: 20px;
+    }
+    .place {
+      width: 150px;
+      background: #444;
+      border: 3px solid #FFD700;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    }
+    .first { height: 220px; background: #FFD700; color: black; }
+    .second { height: 180px; background: #C0C0C0; color: black; }
+    .third { height: 160px; background: #CD7F32; color: black; }
+    .place h2 {
+      margin: 5px 0;
+      font-size: 1.2em;
+    }
+    .leaderboard {
+      width: 80%;
+      margin: 0 auto 40px;
+      border-collapse: collapse;
+    }
+    .leaderboard th, .leaderboard td {
+      border: 1px solid #555;
+      padding: 8px;
+    }
+    .leaderboard th {
+      background: #333;
+      color: #FFD700;
+    }
+    .leaderboard tr:nth-child(even) { background: #2a2a2a; }
+  </style>
+</head>
+<body>
+  <h1>🏁 NASCAR Hours Leaderboard 🏁</h1>
+  
+  <div class="podium">
+    <div class="place second">
+      <h2>2nd</h2>
+      <p>Salazar Towers, Julian David</p>
+      <strong>135.69 hrs</strong>
+    </div>
+    <div class="place first">
+      <h2>1st</h2>
+      <p>Noj Avendano, Luis Gerardo</p>
+      <strong>147.67 hrs</strong>
+    </div>
+    <div class="place third">
+      <h2>3rd</h2>
+      <p>Real Losada, Alison Dahiann</p>
+      <strong>129.55 hrs</strong>
+    </div>
+  </div>
+  
+  <table class="leaderboard">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Name</th>
+        <th>Hours</th>
+      </tr>
+    </thead>
+    <tbody id="ranking-body">
+      <!-- Data will be inserted here -->
+    </tbody>
+  </table>
+  
+  <script>
+    const data = [
+      ["Abril Mogotocoro, Julieth Lorena", 80.83],
+      ["Agreda Ayala, Pablo Jose", 56.5],
+      ["Ajquill Alvarez, Keren Daniela", 72.87],
+      ["Albarran Garcia, Santiago", 44.83],
+      ["Alfonzo Tarquini, Jheanpaul Alejandro", 41.42],
+      ["Almanza Lobo, Luis Daniel", 99.43],
+      ["Alonso Rodriguez, Andres Felipe", 34.64],
+      ["Alvarado Mendoza, Emsho Fidel", 16.88],
+      ["Alvarez Mendez, Johana Andrea", 63.37],
+      ["Alvarez Rodriguez, Laura Victoria", 39.95],
+      ["Alzate Salazar, Cesar Camilo", 93.82],
+      ["Angarita Ortiz, Juan Andres", 89.47],
+      ["Araiza Trejo, Jesus Antonio", 86.37],
+      ["Ardila Arguello, Jean Pablo", 83.43],
+      ["Arevalo Mendez, Josue Daniel", 45.29],
+      ["Arias Salazar, Jacob", 97.03],
+      ["Arreaga Torres, Valerie Monica Mayte", 64.26],
+      ["Asprilla Manzano, Leonardo", 99.64],
+      ["Avellaneda Molina, Nicole Dayanna", 62.21],
+      ["Ayala Figueroa, Ariel", 37.75],
+      ["Salazar Towers, Julian David", 135.69],
+      ["Noj Avendano, Luis Gerardo", 147.67],
+      ["Real Losada, Alison Dahiann", 129.55]
+    ];
+    
+    // Sort data by hours (descending)
+    const sorted = data.sort((a,b) => b[1] - a[1]);
+    
+    const tbody = document.getElementById("ranking-body");
+    sorted.forEach((row, index) => {
+      if (index < 3) return; // skip top 3 (already shown on podium)
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${index+1}</td><td>${row[0]}</td><td>${row[1]}</td>`;
+      tbody.appendChild(tr);
+    });
+  </script>
+</body>
+</html>
