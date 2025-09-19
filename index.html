@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>NASCAR Hours Leaderboard</title>
+  <title>OT Hours Leaderboard</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -18,28 +18,59 @@
       color: #FFD700;
       text-shadow: 2px 2px #000;
     }
-    .podium {
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      margin: 40px auto;
-      gap: 20px;
+
+    /* Track styling */
+    .track {
+      position: relative;
+      width: 600px;
+      height: 300px;
+      margin: 30px auto;
+      border: 10px solid #555;
+      border-radius: 50% / 30%;
+      background: #333;
+      overflow: hidden;
     }
-    .place {
-      width: 150px;
-      background: #444;
-      border: 3px solid #FFD700;
-      border-radius: 10px;
-      padding: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+
+    .car {
+      position: absolute;
+      width: 60px;
+      height: 30px;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 10px;
+      line-height: 30px;
+      font-weight: bold;
+      color: white;
     }
-    .first { height: 220px; background: #FFD700; color: black; }
-    .second { height: 180px; background: #C0C0C0; color: black; }
-    .third { height: 160px; background: #CD7F32; color: black; }
-    .place h2 {
-      margin: 5px 0;
-      font-size: 1.2em;
+
+    .car1 { background: red; animation: race1 8s linear infinite; }
+    .car2 { background: blue; animation: race2 8s linear infinite; }
+    .car3 { background: green; animation: race3 8s linear infinite; }
+
+    /* Animations for cars */
+    @keyframes race1 {
+      0%   { top: 0; left: 270px; }
+      25%  { top: 135px; left: 540px; }
+      50%  { top: 270px; left: 270px; }
+      75%  { top: 135px; left: 0; }
+      100% { top: 0; left: 270px; }
     }
+    @keyframes race2 {
+      0%   { top: 270px; left: 270px; }
+      25%  { top: 135px; left: 0; }
+      50%  { top: 0; left: 270px; }
+      75%  { top: 135px; left: 540px; }
+      100% { top: 270px; left: 270px; }
+    }
+    @keyframes race3 {
+      0%   { top: 135px; left: 540px; }
+      25%  { top: 270px; left: 270px; }
+      50%  { top: 135px; left: 0; }
+      75%  { top: 0; left: 270px; }
+      100% { top: 135px; left: 540px; }
+    }
+
+    /* Leaderboard table */
     .leaderboard {
       width: 80%;
       margin: 0 auto 40px;
@@ -57,26 +88,14 @@
   </style>
 </head>
 <body>
-  <h1>🏁 NASCAR Hours Leaderboard 🏁</h1>
-  
-  <div class="podium">
-    <div class="place second">
-      <h2>2nd</h2>
-      <p>Salazar Towers, Julian David</p>
-      <strong>135.69 hrs</strong>
-    </div>
-    <div class="place first">
-      <h2>1st</h2>
-      <p>Noj Avendano, Luis Gerardo</p>
-      <strong>147.67 hrs</strong>
-    </div>
-    <div class="place third">
-      <h2>3rd</h2>
-      <p>Real Losada, Alison Dahiann</p>
-      <strong>129.55 hrs</strong>
-    </div>
+  <h1>🏁 OT Hours Leaderboard 🏁</h1>
+
+  <div class="track">
+    <div class="car car1">1st<br>Noj<br>147.67h</div>
+    <div class="car car2">2nd<br>Salazar<br>135.69h</div>
+    <div class="car car3">3rd<br>Real<br>129.55h</div>
   </div>
-  
+
   <table class="leaderboard">
     <thead>
       <tr>
@@ -89,7 +108,7 @@
       <!-- Data will be inserted here -->
     </tbody>
   </table>
-  
+
   <script>
     const data = [
       ["Abril Mogotocoro, Julieth Lorena", 80.83],
@@ -101,28 +120,17 @@
       ["Alonso Rodriguez, Andres Felipe", 34.64],
       ["Alvarado Mendoza, Emsho Fidel", 16.88],
       ["Alvarez Mendez, Johana Andrea", 63.37],
-      ["Alvarez Rodriguez, Laura Victoria", 39.95],
-      ["Alzate Salazar, Cesar Camilo", 93.82],
-      ["Angarita Ortiz, Juan Andres", 89.47],
-      ["Araiza Trejo, Jesus Antonio", 86.37],
-      ["Ardila Arguello, Jean Pablo", 83.43],
-      ["Arevalo Mendez, Josue Daniel", 45.29],
-      ["Arias Salazar, Jacob", 97.03],
-      ["Arreaga Torres, Valerie Monica Mayte", 64.26],
-      ["Asprilla Manzano, Leonardo", 99.64],
-      ["Avellaneda Molina, Nicole Dayanna", 62.21],
-      ["Ayala Figueroa, Ariel", 37.75],
-      ["Salazar Towers, Julian David", 135.69],
       ["Noj Avendano, Luis Gerardo", 147.67],
+      ["Salazar Towers, Julian David", 135.69],
       ["Real Losada, Alison Dahiann", 129.55]
     ];
-    
+
     // Sort data by hours (descending)
     const sorted = data.sort((a,b) => b[1] - a[1]);
-    
+
     const tbody = document.getElementById("ranking-body");
     sorted.forEach((row, index) => {
-      if (index < 3) return; // skip top 3 (already shown on podium)
+      if (index < 3) return; // skip top 3 (already shown as cars)
       const tr = document.createElement("tr");
       tr.innerHTML = `<td>${index+1}</td><td>${row[0]}</td><td>${row[1]}</td>`;
       tbody.appendChild(tr);
