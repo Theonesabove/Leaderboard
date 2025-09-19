@@ -2,78 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>OT Hours Leaderboard</title>
+  <title>NASCAR Hours Leaderboard</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #111, #222);
+      background: #111;
       color: white;
+      font-family: Arial, sans-serif;
       text-align: center;
       margin: 0;
       padding: 0;
     }
     h1 {
-      font-size: 2.5em;
       margin: 20px;
       color: #FFD700;
       text-shadow: 2px 2px #000;
     }
-
-    /* Track styling */
-    .track {
-      position: relative;
-      width: 600px;
-      height: 300px;
-      margin: 30px auto;
-      border: 10px solid #555;
-      border-radius: 50% / 30%;
+    svg {
+      display: block;
+      margin: auto;
       background: #333;
-      overflow: hidden;
+      border-radius: 20px;
     }
-
-    .car {
-      position: absolute;
-      width: 60px;
-      height: 30px;
-      border-radius: 5px;
-      text-align: center;
-      font-size: 10px;
-      line-height: 30px;
-      font-weight: bold;
-      color: white;
-    }
-
-    .car1 { background: red; animation: race1 8s linear infinite; }
-    .car2 { background: blue; animation: race2 8s linear infinite; }
-    .car3 { background: green; animation: race3 8s linear infinite; }
-
-    /* Animations for cars */
-    @keyframes race1 {
-      0%   { top: 0; left: 270px; }
-      25%  { top: 135px; left: 540px; }
-      50%  { top: 270px; left: 270px; }
-      75%  { top: 135px; left: 0; }
-      100% { top: 0; left: 270px; }
-    }
-    @keyframes race2 {
-      0%   { top: 270px; left: 270px; }
-      25%  { top: 135px; left: 0; }
-      50%  { top: 0; left: 270px; }
-      75%  { top: 135px; left: 540px; }
-      100% { top: 270px; left: 270px; }
-    }
-    @keyframes race3 {
-      0%   { top: 135px; left: 540px; }
-      25%  { top: 270px; left: 270px; }
-      50%  { top: 135px; left: 0; }
-      75%  { top: 0; left: 270px; }
-      100% { top: 135px; left: 540px; }
-    }
-
-    /* Leaderboard table */
     .leaderboard {
       width: 80%;
-      margin: 0 auto 40px;
+      margin: 20px auto;
       border-collapse: collapse;
     }
     .leaderboard th, .leaderboard td {
@@ -81,20 +33,50 @@
       padding: 8px;
     }
     .leaderboard th {
-      background: #333;
+      background: #222;
       color: #FFD700;
     }
     .leaderboard tr:nth-child(even) { background: #2a2a2a; }
   </style>
 </head>
 <body>
-  <h1>🏁 OT Hours Leaderboard 🏁</h1>
+  <h1>🏁 NASCAR Hours Leaderboard 🏁</h1>
 
-  <div class="track">
-    <div class="car car1">1st<br>Noj<br>147.67h</div>
-    <div class="car car2">2nd<br>Salazar<br>135.69h</div>
-    <div class="car car3">3rd<br>Real<br>129.55h</div>
-  </div>
+  <svg width="800" height="400" viewBox="0 0 800 400">
+    <!-- Grass infield -->
+    <rect x="0" y="0" width="800" height="400" fill="#0a0" />
+
+    <!-- Track outline -->
+    <ellipse cx="400" cy="200" rx="350" ry="150" fill="#333" stroke="#888" stroke-width="10"/>
+
+    <!-- Finish line -->
+    <rect x="395" y="40" width="10" height="40" fill="white"/>
+    <rect x="395" y="60" width="10" height="20" fill="black"/>
+    <rect x="395" y="80" width="10" height="20" fill="white"/>
+    <rect x="395" y="100" width="10" height="20" fill="black"/>
+
+    <!-- Path cars follow -->
+    <path id="trackPath" d="M 50 200 A 350 150 0 1 1 750 200 A 350 150 0 1 1 50 200 Z" fill="none" stroke="none"/>
+
+    <!-- Cars -->
+    <image href="https://upload.wikimedia.org/wikipedia/commons/0/0e/Nascar_car_icon.png" width="40" height="20">
+      <animateMotion dur="20s" repeatCount="indefinite">
+        <mpath href="#trackPath"/>
+      </animateMotion>
+    </image>
+
+    <image href="https://upload.wikimedia.org/wikipedia/commons/0/0e/Nascar_car_icon.png" width="40" height="20">
+      <animateMotion dur="22s" repeatCount="indefinite" begin="2s">
+        <mpath href="#trackPath"/>
+      </animateMotion>
+    </image>
+
+    <image href="https://upload.wikimedia.org/wikipedia/commons/0/0e/Nascar_car_icon.png" width="40" height="20">
+      <animateMotion dur="24s" repeatCount="indefinite" begin="4s">
+        <mpath href="#trackPath"/>
+      </animateMotion>
+    </image>
+  </svg>
 
   <table class="leaderboard">
     <thead>
@@ -104,33 +86,29 @@
         <th>Hours</th>
       </tr>
     </thead>
-    <tbody id="ranking-body">
-      <!-- Data will be inserted here -->
-    </tbody>
+    <tbody id="ranking-body"></tbody>
   </table>
 
   <script>
     const data = [
-      ["Abril Mogotocoro, Julieth Lorena", 80.83],
-      ["Agreda Ayala, Pablo Jose", 56.5],
-      ["Ajquill Alvarez, Keren Daniela", 72.87],
-      ["Albarran Garcia, Santiago", 44.83],
-      ["Alfonzo Tarquini, Jheanpaul Alejandro", 41.42],
-      ["Almanza Lobo, Luis Daniel", 99.43],
-      ["Alonso Rodriguez, Andres Felipe", 34.64],
-      ["Alvarado Mendoza, Emsho Fidel", 16.88],
-      ["Alvarez Mendez, Johana Andrea", 63.37],
       ["Noj Avendano, Luis Gerardo", 147.67],
       ["Salazar Towers, Julian David", 135.69],
-      ["Real Losada, Alison Dahiann", 129.55]
+      ["Real Losada, Alison Dahiann", 129.55],
+      ["Almanza Lobo, Luis Daniel", 99.43],
+      ["Mogotocoro, Julieth Lorena", 80.83],
+      ["Ajquill Alvarez, Keren Daniela", 72.87],
+      ["Alvarez Mendez, Johana Andrea", 63.37],
+      ["Agreda Ayala, Pablo Jose", 56.5],
+      ["Albarran Garcia, Santiago", 44.83],
+      ["Alfonzo Tarquini, Jheanpaul Alejandro", 41.42],
+      ["Alonso Rodriguez, Andres Felipe", 34.64],
+      ["Alvarado Mendoza, Emsho Fidel", 16.88],
     ];
 
-    // Sort data by hours (descending)
     const sorted = data.sort((a,b) => b[1] - a[1]);
-
     const tbody = document.getElementById("ranking-body");
+
     sorted.forEach((row, index) => {
-      if (index < 3) return; // skip top 3 (already shown as cars)
       const tr = document.createElement("tr");
       tr.innerHTML = `<td>${index+1}</td><td>${row[0]}</td><td>${row[1]}</td>`;
       tbody.appendChild(tr);
@@ -138,3 +116,4 @@
   </script>
 </body>
 </html>
+
