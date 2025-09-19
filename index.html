@@ -1,167 +1,193 @@
-import React, { useEffect, useRef, useState } from "react";
-
-// Full dataset (copied from your message)
-const data = [
-  ["Abril Mogotocoro, Julieth Lorena",80.83],["Agreda Ayala, Pablo Jose",56.5],["Ajquill Alvarez, Keren Daniela",72.87],["Albarran Garcia, Santiago",44.83],["Alfonzo Tarquini, Jheanpaul Alejandro",41.42],["Almanza Lobo, Luis Daniel",99.43],["Alonso Rodriguez, Andres Felipe",34.64],["Alvarado Mendoza, Emsho Fidel",16.88],["Alvarez Mendez, Johana Andrea",63.37],["Alvarez Rodriguez, Laura Victoria",39.95],["Alzate Salazar, Cesar Camilo",93.82],["Angarita Ortiz, Juan Andres",89.47],["Araiza Trejo, Jesus Antonio",86.37],["Ardila Arguello, Jean Pablo",83.43],["Arevalo Mendez, Josue Daniel",45.29],["Arias Salazar, Jacob",97.03],["Arreaga Torres, Valerie Monica Mayte",64.26],["Asprilla Manzano, Leonardo",99.64],["Avellaneda Molina, Nicole Dayanna",62.21],["Ayala Figueroa, Ariel",37.75],["Ballestero Lescano, Francisco Javier",100.28],["Baron Lizarazo, Hector Fernando",79.25],["Baron Suarez, Maria Camila",16.52],["Barros Romero, Joaquin Leonardo",77.42],["Bautista Espinosa, Santiago",64.79],["Bayer Jaime, Maria Del Pilar",68.24],["Bejarano Cardozo, Edgardo Sebastian",33.25],["Bernal Ferrer, Alma Lucia",80.35],["Bernal, Santiago",100.16],["Betancourt Contreras, Ricardo",43.15],["Blaguy Cordero, Ariam Dessire",100.76],["Blandon Cardona, Daniel",84.68],["Borda Castillo, Daniel Alejandro",52.85],["Bustillo Sanchez, Yisack Alejandro",46.45],["Cadena Jaramillo, Jose Camilo",31.3],["Cardenas Jaramillo, Miguel Angel",82.55],["Cardenas Ussa, Nicolas",93.41],["Caro Aguilar, Andres Felipe",88.04],["Carranza, Lucas Maximiliano",96.06],["Casignia Vasconez, Cristian Javier",71.59],["Castellanos Giraldo, Daniela",74.91],["Castro Loaisiga, Aileen Isamar",55.96],["Castro Vargas, Andres Felipe",95.62],["Celis Ballen, Johan Arley",63.47],["Celis Duarte, Santiago",81.72],["Chicaiza Yela, Jorge Eduardo",103.72],["Cifuentes Estrada, Miriam Lisbeth",107.36],["Cobo Cano, Alejandro",105],["Contreras Arevalo, David Alejandro",61.2],["Correa Londono, Daniela",19.2],["Correa, Ivan",68.17],["Cruz Meza, Andrea Estefania",10.92],["Cruz Urbina, Kevin Roberto",96.7],["Davis Britton, Valerie Elizabeth",65.18],["de la Cruz Diaz, Daniela Estrella",66.68],["de Leon Rodriguez, Gerardo Luis",53.59],["Del Toro Ochoa, Argelia",41.82],["Diaz Contreras, Mayra Isabel",72.98],["Diaz Libreros, Juan Sebastian",103.01],["Dolmus Arauz, Harri Andres",62.43],["Donis Miranda, Brayan Alexander",68.99],["Duarte Acosta, Chad Rony Danilo",58.92],["Escobar Molina, Silvia Maria",52.9],["Espana Julio, Gabriel Esteban",92.18],["Espinal Soriano, Enrique",48.33],["Estrada Segura, Sarah",88.89],["Fiel, Alan",1.05],["Flores Cruz, Jonathan Obed",103.02],["Flores Fernandez, Angela Esperanza",55.79],["Fonseca Vado, Scott Rogier",57.5],["Franco Morales, Julian",94.18],["Franco Villegas, Valentina",92.65],["Galeas Aguilar, Alicia Maria",39.32],["Galvez Talarico, Joel Andres",91.64],["Garcia Castro, Antonny Steve",67.2],["Garcia Hernandez, Yomary Beatriz",126.86],["Garcia Montes, Isaias Antonio",103.38],["Garcia Rodriguez, Theresa",69.77],["Garcia, Oscar Armando",86.85],["Garniga Osorio, Francisco Eduardo",78.47],["Garzon Ardila, Maria Fernanda",78.64],["Gil Cardenas, Brayan Smith",111.88],["Giron Alonso, Carlos Ernesto",43.32],["Gomez Pinzon, Gustavo III",90.14],["Gomez Zavaleta, Ana Marcela",72.54],["Gonzalez Abad, Jose Daniel",52.01],["Guasca Arias, Laura Valentina",74.14],["Guerra Alvarenga, Regina Elizabeth",50.29],["Guerra Grimaldo, Daniel Felipe",34.91],["Guerrero Mejia, Juan Diego",112.59],["Gutierrez Escobar, Violeta Elizabeth",62.18],["Gutierrez Ventura, Joel Elias",59.37],["Hernandez Bustillo, Rafael Emilio",53.04],["Hernandez Gonzalez, Manuel Ricardo",67.76],["Hernandez Grimaldos, Laura Juliana",93.34],["Hernandez Hernandez, Yeni Raquel",99.34],["Hernandez Neuta, Andres Santiago",96.82],["Jara Sastoque, Gabriela",117.11],["Jaramillo Valoyes, Jorge Arley",58.32],["Jimenez Diaz, Jorge Andres",83.16],["Jofre Rojas, Belen Andrea",99.75],["Lagos Amador, Evelyn Fabiola",90.53],["Linares Canizalez, Ninibeth Paola",77.75],["Loaiza Lopez, David",84.39],["Londono Mejia, Andres Felipe",92.91],["Lopera Restrepo, Angee Paola",103],["Lopez Gallo, Juan Sebastian",95.09],["Lopez Galvan, Maria Camila",93.54],["Lopez Lopez, Marco Antonio",71.52],["Lopez Riveros, Maria Juliana",86.31],["Lopez Ruiz, Kiupsa Dayanary",72.5],["Machado Gonzalez, Sebastian",125.63],["Machuca Arevalo , Nathalia Alexandra",115.02],["Malaver Huepa, Juan Pablo",65.47],["Maldonado Calderon, Joshua Levi",36.13],["Martinez Alegria, Carlos Alberto",95.08],["Martinez Martinez, Josue David",85.7],["Martinez Medina, Cristiam Yake",123.7],["Membreno Hernandez, Fabio Andres",73.94],["Membreno Tellez, Christopher Adrian",115.04],["Mena Espinoza, Valeria Yaoska",76.18],["Mendez Osorio, Willy Abraham",0.5],["Mieles Molina, Christian Eduardo",62.91],["Miranda Ericastilla, Daniela Clementina",104.67],["Miranda Leuschner, Francisco Eduardo",84.26],["Molina Rodriguez, Emilio Asuncion",67.65],["Montoya Zuleta, Julio Jose",63.29],["Monzon Acevedo, Flavio Omero",93.89],["Morales Cux, Jorge David",83.35],["Morales Mesa, Juan Felipe",58.75],["Morales, Jerald Martin",102.61],["Moreno Menco, Isabella",122.14],["Moros Luque, Franco Alain",58.84],["Naranjo Charry, Luis Felipe",68.41],["Narvaez Narvaez, Liliana Esther",106.52],["Noj Avendano, Luis Gerardo",147.67],["Novoa Claro, Sara Elisa",97.55],["Nunez Jarquin, Luis Carlos",58.09],["Nunez Ramirez, Frank Anthony",74.94],["Nunez Zavala, Julio Ernesto",48.66],["Nustes Pinzon, David",62.18],["Ochoa Valdovinos, Irving Aaron",27.53],["Oliveros Castro, Cristhian Eduardo",57.17],["Oliveros Orozco, Elindeluz Andrea",101.35],["Orellana Espinal, Nicolle Marisela",32.28],["Ortega Gallegos, Rubi Liliana",94.52],["Ortega Sanabria, Josue David",110.08],["Ortiz Rubiano, Cesar Camilo",106.64],["Osorio Sepulveda, Alejandro",54.88],["Otalvaro Ramirez, Paula Andrea",64.56],["Otero Rojas, Juan Pablo",55.23],["Oviedo Cango, Anthony Sebastian",22.9],["Oyola Rodriguez, Cindy Nathaly",47.43],["Pacheco Montalvo, Juan Sebastian",95.8],["Palacios Herrera, Astrid Yolima",91.55],["Palacios Rodas, Maria Celeste",78],["Parodi Bolano, Maria Alejandra",106.58],["Parra Arango, Luis Miguel",22.21],["Parra Gomez, Brayan Sneyder",39.59],["Parra Guevara, Maria Alejandra",49.38],["Parra Ibarra, Alvaro Ignacio",95.55],["Patino Rojas, Alexander",76.51],["Paz Alberto, Josue Alexander",65.8],["Pena Cuero, Maria Del Mar",102.02],["Penalba Murillo, Heber Andres",86.76],["Pennente, Federico Adrian",95.27],["Penner, Maria Magdalena",97.68],["Perdomo Vasquez, Juan Camilo",92.57],["Perez Mantilla, Oscar Camilo",106.19],["Perez Riveros, Santiago Ivan",53.14],["Pimentel Lovos, Sergio Alexis",53.57],["Pinzon Lopez, Maria Camila",88.5],["Plaza Zapata, Andres Felipe",89.16],["Portillo Brasil, Alvaro Andres",82.16],["Quiceno Blandon, Nataly",100.08],["Quintero Silva, Yarel Juliana",47.55],["Ramos Suarez, Jimmy Alejandro",98.2],["Real Losada, Alison Dahiann",129.55],["Restrepo Yepes, Kelly Johana",75.52],["Revolorio Gordillo, Gladys Odette",84.62],["Revolorio Guzman, Carlos Alejandro",74.99],["Rey Pabon, Andersson Steve",119.11],["Reyes Gaitan, Claudia Lorena",52.74],["Reyes Garcia, Damaris Abigail",114.53],["Reyes Gomez, Ruben Dario",94.77],["Reyes Yepes, Sebastian",80.54],["Reyna Karkomes, Juan David",86.27],["Rivera Henriquez, Fatima Sarahy",52.19],["Rodas Simmonite, William David",86.95],["Rodriguez Carvajal, Jhon",50.53],["Rodriguez Cortes, Santiago Andres",81.69],["Rodriguez Estupinan, Cristian Ricardo",93.49],["Rodriguez Guerra, Carla Valentina",45.49],["Rodriguez Martinez, Isabella Rose",108.7],["Rodriguez Orozco, Carlos Andres",61.98],["Rodriguez Ricaurte, Juan Diego",75.26],["Rodriguez Soto, Irving Janniel",100.65],["Rueda Bastidas, Juan Sebastian",60.18],["Salazar Acosta, Andres Felipe",102.55],["Salazar Monroy, Andrea Alejandra",107.5],["Salazar Towers, Julian David",135.69],["Salguero Quinonez, Yasmin Elizabeth",113.71],["Sanchez Herrera, Juan Francisco",74.65],["Sandoval Martinez, Astrid Samantha",32.31],["Santos Marroquin, Marlon Gamaliel",63.69],["Saravia Ugarte, Gabriel Alejandro",126.6],["Sepulveda Hernandez, Daniel Enrique",69],["Serrano Gomez, Viviana",91.46],["Sierra Perez, Elisa",91.16],["Silva Salazar, Kristopher Fernando",88.06],["Suarez Losada, Duban Ricardo",95.03],["Suarez Vasquez, Valeria",87.17],["Tellez Garay, Edgar Stephen",100.19],["Tobon Gomez, Juan Camilo",79.52],["Torres Carrillo, Juan Camilo",72.17],["Torres Pacheco, Natalia",52.91],["Uhia Zalabata, Maria del Mar",37.3],["Urbina Velasquez, Andres Felipe",56.85],["Urizar Perez, Carlos Eduardo",78.76],["Valencia Garcia, Diana Marcela",77.27],["Valencia Lopez, Juan Martin",96.96],["Valencia Varela, Mario Alejandro",98.52],["Valladares Sanchez, Jonathan Isai",58.63],["Vargas Bulnes, Sinia Sthefania",95.77],["VasquezÂ Lopez, Heber Alfonso",51.4],["Velez Lastra, Marcelo Daniel",81.72],["Villamizar Luna, Juan Andres",87.5],["Villamizar, Camilo",93.37],["Willy Abraham, Mendez Osorio",0.66],["Yanez Garzon, Michelle Andrea",112.43],["Zapata Rodas, Norma Yanina",108.58],["Zepeda Maradiaga, Waleska Paola",63.44],["Zuniga Gongora, Dario Esteban",102.03]
-];
-
-export default function RaceTrack() {
-  const svgRef = useRef(null);
-  const [sorted, setSorted] = useState([]);
-
-  useEffect(() => {
-    // sort descending by hours
-    const s = [...data].sort((a,b) => b[1] - a[1]);
-    setSorted(s);
-  }, []);
-
-  useEffect(() => {
-    if (!sorted.length) return;
-
-    const svg = svgRef.current;
-    const pathEl = svg.querySelector('#trackPath');
-    const pathLength = pathEl.getTotalLength();
-
-    // speed scaling: map hours to angular speed (units: px per second along path)
-    const hoursArray = sorted.map(d=>d[1]);
-    const maxH = Math.max(...hoursArray);
-    const minH = Math.min(...hoursArray);
-
-    const minSpeed = 30; // px/sec (slowest)
-    const maxSpeed = 120; // px/sec (fastest)
-
-    function speedForHours(h) {
-      if (maxH === minH) return (minSpeed+maxSpeed)/2;
-      return minSpeed + (h - minH) * (maxSpeed - minSpeed) / (maxH - minH);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>OT Hours Leaderboard</title>
+  <style>
+    body {
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
     }
+    h1 {
+      margin: 20px;
+      color: #FFD700;
+      text-shadow: 2px 2px #000;
+    }
+    svg {
+      display: block;
+      margin: auto;
+      background: #2b2b2b;
+      border-radius: 20px;
+    }
+    .leaderboard {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+    .leaderboard th, .leaderboard td {
+      border: 1px solid #555;
+      padding: 8px;
+    }
+    .leaderboard th {
+      background: #222;
+      color: #FFD700;
+    }
+    .leaderboard tr:nth-child(even) { background: #2a2a2a; }
+  </style>
+</head>
+<body>
+  <h1>🏁 OT Hours Leaderboard 🏁</h1>
 
-    // create top-3 car elements
-    const carsGroup = svg.querySelector('#cars');
-    carsGroup.innerHTML = '';
+  <svg width="900" height="500" viewBox="0 0 900 500">
+    <!-- Grass infield -->
+    <rect x="0" y="0" width="900" height="500" fill="#0a0" />
 
-    const top3 = sorted.slice(0,3);
-    const colors = ['#e74c3c','#3498db','#2ecc71'];
+    <!-- Track outline -->
+    <ellipse cx="450" cy="250" rx="400" ry="180" fill="#333" stroke="#888" stroke-width="12"/>
 
-    top3.forEach((row, idx) => {
-      const [name, hours] = row;
-      const carG = document.createElementNS('http://www.w3.org/2000/svg','g');
+    <!-- Finish line -->
+    <rect x="445" y="70" width="10" height="60" fill="url(#checker)"/>
 
-      // create realistic car path (stock car silhouette)
-      const carBody = document.createElementNS('http://www.w3.org/2000/svg','path');
-      carBody.setAttribute('d', 'M5 15 Q15 3 45 3 Q75 3 85 15 L85 25 Q75 37 45 37 Q15 37 5 25 Z');
-      carBody.setAttribute('fill', colors[idx]);
-      carBody.setAttribute('stroke', '#222');
-      carBody.setAttribute('stroke-width', '1');
-      carG.appendChild(carBody);
+    <defs>
+      <!-- Checkerboard pattern -->
+      <pattern id="checker" width="10" height="10" patternUnits="userSpaceOnUse">
+        <rect x="0" y="0" width="5" height="5" fill="black"/>
+        <rect x="5" y="0" width="5" height="5" fill="white"/>
+        <rect x="0" y="5" width="5" height="5" fill="white"/>
+        <rect x="5" y="5" width="5" height="5" fill="black"/>
+      </pattern>
 
-      // windows
-      const win = document.createElementNS('http://www.w3.org/2000/svg','rect');
-      win.setAttribute('x','28'); win.setAttribute('y','8'); win.setAttribute('width','28'); win.setAttribute('height','12'); win.setAttribute('rx','2'); win.setAttribute('fill','rgba(255,255,255,0.6)');
-      carG.appendChild(win);
+      <!-- Track path -->
+      <path id="trackPath" d="M 50 250 A 400 180 0 1 1 850 250 A 400 180 0 1 1 50 250 Z" fill="none" stroke="none"/>
+    </defs>
 
-      // wheels
-      const w1 = document.createElementNS('http://www.w3.org/2000/svg','circle'); w1.setAttribute('cx','22'); w1.setAttribute('cy','36'); w1.setAttribute('r','5'); w1.setAttribute('fill','#111'); carG.appendChild(w1);
-      const w2 = document.createElementNS('http://www.w3.org/2000/svg','circle'); w2.setAttribute('cx','68'); w2.setAttribute('cy','36'); w2.setAttribute('r','5'); w2.setAttribute('fill','#111'); carG.appendChild(w2);
+    <!-- Cars (inserted via JS) -->
+    <g id="cars"></g>
+  </svg>
 
-      // label
-      const label = document.createElementNS('http://www.w3.org/2000/svg','text');
-      label.setAttribute('x','45'); label.setAttribute('y','-6'); label.setAttribute('font-size','10'); label.setAttribute('fill','white'); label.setAttribute('text-anchor','middle');
-      label.textContent = `${name.split(',')[0]} (${hours}h)`;
-      carG.appendChild(label);
+  <table class="leaderboard">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Name</th>
+        <th>Hours</th>
+      </tr>
+    </thead>
+    <tbody id="ranking-body"></tbody>
+  </table>
 
-      // put car at starting offset along path (spread them out)
-      const startOffset = idx * 100; // px offset along path
+  <script>
+    const data = [
+      ["Noj Avendano, Luis Gerardo", 147.67],
+      ["Salazar Towers, Julian David", 135.69],
+      ["Real Losada, Alison Dahiann", 129.55],
+      ["Almanza Lobo, Luis Daniel", 99.43],
+      ["Mogotocoro, Julieth Lorena", 80.83],
+      ["Ajquill Alvarez, Keren Daniela", 72.87],
+      ["Alvarez Mendez, Johana Andrea", 63.37],
+      ["Agreda Ayala, Pablo Jose", 56.5],
+      ["Albarran Garcia, Santiago", 44.83],
+      ["Alfonzo Tarquini, Jheanpaul Alejandro", 41.42],
+      ["Alonso Rodriguez, Andres Felipe", 34.64],
+      ["Alvarado Mendoza, Emsho Fidel", 16.88],
+    ];
 
-      // store runtime params
-      const speed = speedForHours(hours); // px/sec
+    const sorted = data.sort((a,b) => b[1] - a[1]);
 
-      // add to DOM
-      carG.setAttribute('data-offset', startOffset);
-      carG.setAttribute('data-speed', speed);
-      carsGroup.appendChild(carG);
+    // Fill leaderboard table
+    const tbody = document.getElementById("ranking-body");
+    sorted.forEach((row, index) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${index+1}</td><td>${row[0]}</td><td>${row[1]}</td>`;
+      tbody.appendChild(tr);
     });
 
-    // animation loop
-    let last = performance.now();
+    // Car colors for top 3
+    const colors = ["red", "blue", "green"];
+    const carsGroup = document.getElementById("cars");
 
-    function animate(now) {
-      const dt = (now - last) / 1000; // seconds
-      last = now;
+    // Speed scaling
+    const maxHours = sorted[0][1];
+    const minHours = sorted[sorted.length-1][1];
+    const minDur = 15; // fastest
+    const maxDur = 30; // slowest
 
-      const carNodes = carsGroup.querySelectorAll('g');
-      carNodes.forEach((g) => {
-        let offset = parseFloat(g.getAttribute('data-offset'));
-        const speed = parseFloat(g.getAttribute('data-speed'));
-
-        offset = (offset + speed * dt) % pathLength;
-        g.setAttribute('data-offset', offset);
-
-        const pt = pathEl.getPointAtLength(offset);
-        // tangent for rotation: small delta ahead
-        const ahead = (offset + 2) % pathLength;
-        const pt2 = pathEl.getPointAtLength(ahead);
-        const dx = pt2.x - pt.x;
-        const dy = pt2.y - pt.y;
-        const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-
-        // position the car group (centered)
-        g.setAttribute('transform', `translate(${pt.x-45}, ${pt.y-20}) rotate(${angle}, 45, 20)`);
-      });
-
-      requestAnimationFrame(animate);
+    function scaleDuration(hours) {
+      return maxDur - (hours - minHours) * (maxDur - minDur) / (maxHours - minHours);
     }
 
-    requestAnimationFrame((t)=>{ last = t; animate(t); });
+    // SVG car shape (simplified stock car)
+    function makeCarSVG(color, label) {
+      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
 
-    // clean up on unmount
-    return () => {};
-  }, [sorted]);
+      // Body
+      const body = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      body.setAttribute("d", "M5 15 Q15 0 45 0 Q75 0 85 15 L85 25 Q75 35 45 35 Q15 35 5 25 Z");
+      body.setAttribute("fill", color);
+      g.appendChild(body);
 
-  return (
-    <div style={{padding:20, color:'#fff', fontFamily:'Arial'}}>
-      <h2 style={{color:'#FFD700'}}>🏁 OT Hours Leaderboard</h2>
-      <svg ref={svgRef} width={1000} height={550} viewBox="0 0 1000 550" style={{background:'#2b2b2b', borderRadius:12}}>
-        <rect x="0" y="0" width="1000" height="550" fill="#0a0" />
-        <ellipse cx="500" cy="275" rx="430" ry="210" fill="#333" stroke="#888" strokeWidth="14" />
+      // Windows
+      const win = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      win.setAttribute("x", "25");
+      win.setAttribute("y", "5");
+      win.setAttribute("width", "35");
+      win.setAttribute("height", "15");
+      win.setAttribute("fill", "lightblue");
+      g.appendChild(win);
 
-        <defs>
-          <pattern id="checker" width="10" height="10" patternUnits="userSpaceOnUse">
-            <rect x="0" y="0" width="5" height="5" fill="black"/>
-            <rect x="5" y="0" width="5" height="5" fill="white"/>
-            <rect x="0" y="5" width="5" height="5" fill="white"/>
-            <rect x="5" y="5" width="5" height="5" fill="black"/>
-          </pattern>
-        </defs>
+      // Wheels
+      const wheel1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      wheel1.setAttribute("cx", "20");
+      wheel1.setAttribute("cy", "32");
+      wheel1.setAttribute("r", "6");
+      wheel1.setAttribute("fill", "black");
+      g.appendChild(wheel1);
 
-        {/* finish line */}
-        <rect x="495" y="60" width="10" height="80" fill="url(#checker)" />
+      const wheel2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      wheel2.setAttribute("cx", "70");
+      wheel2.setAttribute("cy", "32");
+      wheel2.setAttribute("r", "6");
+      wheel2.setAttribute("fill", "black");
+      g.appendChild(wheel2);
 
-        {/* path for cars */}
-        <path id="trackPath" d="M 70 275 A 430 210 0 1 1 930 275 A 430 210 0 1 1 70 275 Z" fill="none" stroke="none" />
+      // Label above car
+      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      text.setAttribute("x", "45");
+      text.setAttribute("y", "-5");
+      text.setAttribute("font-size", "8");
+      text.setAttribute("fill", "white");
+      text.setAttribute("text-anchor", "middle");
+      text.textContent = label;
+      g.appendChild(text);
 
-        <g id="cars"></g>
-      </svg>
+      return g;
+    }
 
-      <div style={{width:'90%', margin:'20px auto'}}>
-        <table style={{width:'100%', borderCollapse:'collapse'}}>
-          <thead>
-            <tr style={{background:'#222', color:'#FFD700'}}>
-              <th style={{padding:8, border:'1px solid #555'}}>Rank</th>
-              <th style={{padding:8, border:'1px solid #555'}}>Name</th>
-              <th style={{padding:8, border:'1px solid #555'}}>Hours</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sorted.map((r, i) => (
-              <tr key={r[0]} style={{background: i%2===0? '#1f1f1f':'#2a2a2a'}}>
-                <td style={{padding:8, border:'1px solid #555'}}>{i+1}</td>
-                <td style={{padding:8, border:'1px solid #555'}}>{r[0]}</td>
-                <td style={{padding:8, border:'1px solid #555'}}>{r[1]}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
+    // Add top 3 cars
+    sorted.slice(0,3).forEach((row, i) => {
+      const [name, hours] = row;
+      const dur = scaleDuration(hours).toFixed(2) + "s";
+      const shortName = name.split(",")[0]; 
+
+      const car = makeCarSVG(colors[i], `${shortName} (${hours}h)`);
+
+      // Animate motion
+      const animateMotion = document.createElementNS("http://www.w3.org/2000/svg", "animateMotion");
+      animateMotion.setAttribute("dur", dur);
+      animateMotion.setAttribute("repeatCount", "indefinite");
+
+      const mpath = document.createElementNS("http://www.w3.org/2000/svg", "mpath");
+      mpath.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#trackPath");
+
+      animateMotion.appendChild(mpath);
+      car.appendChild(animateMotion);
+
+      carsGroup.appendChild(car);
+    });
+  </script>
+</body>
+</html>
